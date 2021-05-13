@@ -1,7 +1,7 @@
 import { Request, Response } from 'express'
 
-import User, { IUser } from '../models/User'
-import { signupValidation, signinValidation } from '../libs/joi'
+import User, { IUser } from '../Models/User'
+import { signupValidation, signinValidation } from '../DTOs/UserDto'
 import jwt from 'jsonwebtoken';
 
 export const signup = async (req: Request, res: Response) => {

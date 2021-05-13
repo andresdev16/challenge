@@ -1,5 +1,5 @@
 import Joi from '@hapi/joi';
-import {IUser} from '../models/User'
+import {IUser} from '../Models/User'
 
 export const signupValidation = (data: IUser) => {
     const userSchema = Joi.object({
