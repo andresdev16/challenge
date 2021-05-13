@@ -67,7 +67,5 @@ export const updateProfile = async (req: Request, res: Response) => {
     if (!user) {
         return res.status(404).json('User not found')
     }
-    else {
-        res.status(200).json('User update successfully')
-    }
+    res.status(200).json('User update successfully')
 }

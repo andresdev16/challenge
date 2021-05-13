@@ -12,7 +12,6 @@ export interface IUser extends Document {
 const userSchema = new Schema<IUser>({
     username: {
         type: String,
-        required: true,
         min: 4,
         lowercase: true
     },

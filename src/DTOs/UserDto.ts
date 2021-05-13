@@ -6,8 +6,7 @@ export const signupValidation = (data: IUser) => {
         username: Joi
             .string()
             .min(4)
-            .max(30)
-            .required(),
+            .max(30),
         email: Joi
             .string()
             .required(),
