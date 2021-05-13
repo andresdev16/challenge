@@ -3,6 +3,7 @@ import { Request, Response } from 'express'
 import User, { IUser } from '../Models/User'
 import { signupValidation, signinValidation } from '../DTOs/UserDto'
 import jwt from 'jsonwebtoken';
+import bcrypt from 'bcryptjs';
 
 export const signup = async (req: Request, res: Response) => {
     // Validation
@@ -49,7 +50,37 @@ export const signin = async (req: Request, res: Response) => {
 export const profile = async (req: Request, res: Response) => {
     const user = await User.findById(req.userId, { password: 0 });
     if (!user) {
-        return res.status(404).json('No User found');
+        return res.status(404).json('User not found');
     }
     res.json(user);
 };
+
+export const updateProfile = async (req: Request, res: Response) => {
+    const user = await User.findByIdAndUpdate(req.userId, { 
+        $set: { 
+            username: req.body.username, 
+            email: req.body.email } 
+    })
+    if (!user) {
+        return res.status(404).json('User not found')
+    }
+    else {
+        res.status(200).json('User update successfully')
+    }
+}
+
+export const updatePassword = async (req: Request, res: Response) => {
+    const salt = await bcrypt.genSalt(10);
+    const hashedPassword = await bcrypt.hash(req.body.password, salt);
+    const user = await User.findByIdAndUpdate(req.userId, {
+        $set: {
+            password: hashedPassword
+        }
+    });
+    if (!user) {
+        return res.status(404).json('User not found')
+    }
+    else {
+        res.status(200).json('Passoword updated successfully')
+    }
+}
