@@ -56,31 +56,18 @@ export const profile = async (req: Request, res: Response) => {
 };
 
 export const updateProfile = async (req: Request, res: Response) => {
+    const salt = await bcrypt.genSalt(10);
+    const hashedPassword = await bcrypt.hash(req.body.password, salt);
     const user = await User.findByIdAndUpdate(req.userId, { 
         $set: { 
             username: req.body.username, 
-            email: req.body.email } 
+            email: req.body.email,
+            password: hashedPassword } 
     })
     if (!user) {
         return res.status(404).json('User not found')
     }
     else {
         res.status(200).json('User update successfully')
-    }
-}
-
-export const updatePassword = async (req: Request, res: Response) => {
-    const salt = await bcrypt.genSalt(10);
-    const hashedPassword = await bcrypt.hash(req.body.password, salt);
-    const user = await User.findByIdAndUpdate(req.userId, {
-        $set: {
-            password: hashedPassword
-        }
-    });
-    if (!user) {
-        return res.status(404).json('User not found')
-    }
-    else {
-        res.status(200).json('Passoword updated successfully')
     }
 }
